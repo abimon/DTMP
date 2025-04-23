@@ -15,6 +15,7 @@ import { H3, Paragraph, Span } from "@component/Typography";
 import ProductQuickView from "@component/products/ProductQuickView";
 import { useAppContext } from "@context/app-context";
 import { calculateDiscount, currency } from "@utils/utils";
+import { StaticImageData } from "next/image";
 
 // STYLED COMPONENTS
 const Wrapper = styled("div")`
@@ -105,50 +106,61 @@ const ContentWrapper = styled("div")`
 
 
 // =============================================================
-type ProductCard12Props = {
+type ProductCardProps = {
   id: string;
-  off?: number;
+  name: string;
   slug: string;
-  title: string;
-  subTitle: string;
-  price: number;
-  imgUrl: string;
+  description: string;
+  createdAt: string;
+  imgURL: StaticImageData;
+  price: number; // Added missing properties
   rating: number;
-  images: string[];
+  reviews: [];
+  stock: number;
+  customFields: {
+    resourceCategory: string;
+    resourceDescription1: string;
+    domain: string;
+    sector: string;
+    region: string;
+    resourceVersion: string;
+    resourceCode: string;
+    resourceDescription2: string;
+    overview: string;
+    timeBenefit: string;
+    costBenefit: string;
+    qualityBenefit: string;
+    estimatedCompletionTime: string;
+    steps: string[];
+  };
+  discount: number; // Added missing properties
+  thumbnail: string; // Added missing properties
+  spec: string; // Added missing properties
+  categories: string[]; // Added missing properties
+  // images?: string[]; // Added missing properties
+};
+// =============================================================
+type Props = {
+  product: ProductCardProps;
 };
 // =============================================================
 
-export default function ProductCard12(props: ProductCard12Props) {
-  const { off, subTitle, title, price, imgUrl, rating, slug, id, images } = props;
+export default function ProductCard12({product}: Props) {
 
-  const [open, setOpen] = useState(false);
-  const { state, dispatch } = useAppContext();
-
-  const cartItem = state.cart.find((item) => item.id === id);
-
-  const toggleDialog = useCallback(() => setOpen((open) => !open), []);
-
-  const handleCartAmountChange = (qty: number) => () => {
-    dispatch({
-      type: "CHANGE_CART_AMOUNT",
-      payload: { price, imgUrl, id, qty, slug, name: title }
-    });
-  };
 
   return (
     <Wrapper>
       <ImageWrapper>
-
         <ImageBox className="hoverImgBox">
-          <Link href={`/product/${slug}`}>
-            <NextImage alt={title} width={190} height={190} src={imgUrl} />
+          <Link href={`/product/${product.slug}`}>
+            <NextImage alt={product.slug} width={190} height={190} src={product.imgURL} />
           </Link>
         </ImageBox>
 
         <HoverButtonBox className="hoverButtonBox">
           <Box className="buttonBox">
             <ItemController>
-              <Span onClick={toggleDialog}>
+              <Span >
                 <Icon variant="small">eye-alt</Icon>
               </Span>
             </ItemController>
@@ -157,28 +169,28 @@ export default function ProductCard12(props: ProductCard12Props) {
       </ImageWrapper>
 
       <ContentWrapper>
-        <Link href={`#`}>
+        <Link href={`/product/${product.slug}`}>
           <H3
             mb={1}
-            title={title}
+            title={product.name}
             fontSize="16px"
             fontWeight="600"
             className="title"
-            color="text.secondary">
-            {title}
+            color="text.secondary"
+          >
+            {product.name}
           </H3>
-          <p style={{ fontSize: '14px', color: '#50526B', fontWeight: '400', }}>
-            {subTitle}
+          <p style={{ fontSize: "14px", color: "#50526B", fontWeight: "400" }}>
+            {product.customFields.resourceCategory}
           </p>
         </Link>
-
       </ContentWrapper>
 
-      <ProductQuickView
+      {/* <ProductQuickView
         open={open}
         onClose={toggleDialog}
         product={{ id, images, slug, price, title }}
-      />
+      /> */}
     </Wrapper>
   );
 }
