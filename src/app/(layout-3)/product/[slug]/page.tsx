@@ -41,14 +41,7 @@ import { Fragment, useEffect, useState } from "react";
 import { GET_PRODUCT, GET_PRODUCTS} from "@lib/queries";
 import { useQuery } from "@apollo/client";
 import ProductView from "@component/products/ProductView";
-import shops from "@utils/__api__/shops";
-import api from "@utils/__api__/products";
-import FlexBox from "@component/FlexBox";
-
-import { relatedProducts } from "__server__/__db__/related-products/data";
 import ProductIntro from "@component/products/ProductIntro";
-import Shop from "@models/shop.model";
-import Product from "@models/product.model";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -82,9 +75,8 @@ export default function ProductDetails({ params }: Props) {
       <ProductIntro product={productData} />
 
       <ProductView
-        // shops={shops}
-        relatedProducts={relatedProducts}
-        frequentlyBought={products}
+        products={products}
+        product={productData['product']}
       />
     </Fragment>
   );

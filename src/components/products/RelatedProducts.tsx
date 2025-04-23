@@ -1,13 +1,9 @@
 import Box from "@component/Box";
-import Grid from "@component/grid/Grid";
 import { H2 } from "@component/Typography";
-import { ProductCard1 } from "@component/product-cards";
 import Product from "@models/product.model";
-import ProductCard20 from "@component/product-cards/ProductCard20";
-import { H1 } from "@component/Typography";
 import { Carousel } from "@component/carousel";
-import { ProductCard12, ProductCard16, } from "@component/product-cards";
 import CategorySectionCreator from "@component/CategorySectionCreator";
+import ProductCard21 from "@component/product-cards/ProductCard21";
 
 // ============================================================
 type Props = { products: Product[] };
@@ -18,30 +14,33 @@ export default function RelatedProducts({ products }: Props) {
     { breakpoint: 650, settings: { slidesToShow: 2 } },
     { breakpoint: 500, settings: { slidesToShow: 1 } }
   ];
+  const prods = products['products']['items'];
 
+console.log(products["products"]['items']);
   return (
     <CategorySectionCreator>
 
       <Box my="-0.25rem"> 
-      <H2 mb="1.5rem">Related Resources</H2>
+      <H2 mb="1.5rem">Other Services</H2>
         <Carousel responsive={responsive} slidesToShow={4}>
-          {products.map((item, ind) => (
+          {prods.map((item, ind) => (
             <Box py="0.25rem" key={ind}>
-              <ProductCard20
+              <ProductCard21
                 id={item.id}
+                name={item.name}
                 slug={item.slug}
-                //unit={item.unit}
-                title={item.title}
-                subTitle={item.subTitle}
-                color={item.color}
-                bg={item.bg}
-                spec={item.spec}
-                btnText={item.btnText}
+                description={item.description}
+                imgURL={item.imgURL}
                 price={item.price}
-                off={item.discount}
+                customFields={item.customFields}
+                createdAt={item.createdAt}
+                stock={item.stock}
+                discount={item.discount}
+                thumbnail={item.thumbnail}
+                spec={item.spec}
+                categories={item.categories}
                 rating={item.rating}
-                images={item.images}
-                imgUrl={item.thumbnail}
+                reviews={item.reviews}
               />
             </Box>
           ))}

@@ -1,68 +1,20 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
 import Box from "@component/Box";
-import Shop from "@models/shop.model";
 import Image from "@component/Image";
-import Rating from "@component/rating";
-import Avatar from "@component/avatar";
 import Grid from "@component/grid/Grid";
 import Icon from "@component/icon/Icon";
-import Card from "@component/Card";
 import FlexBox from "@component/FlexBox";
 import { Button } from "@component/buttons";
 import { H1, H2, H3, H4, H5, H6, SemiSpan } from "@component/Typography";
 import { useAppContext } from "@context/app-context";
 import dayjs from "dayjs";
 import "dayjs/locale/en";
-import { currency } from "@utils/utils";
-import Product from "@models/product.model";
-import { colors } from "theme/colors/colors";
 import { StaticImageData } from "next/image";
-// import { Carousel } from "@component/carousel";
+import Rating from "@component/rating";
 
-// ========================================
-type ProductCard10Props = {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  createdAt: string;
-  imgURL: string | StaticImageData;
-  price: number; // Added missing properties
-  title: string;
-  subTitle: string;
-  rating: number;
-  reviews: [];
-  stock: number;
-  discount: number; // Added missing properties
-  thumbnail: string; // Added missing properties
-  spec: string; // Added missing properties
-  categories: string[]; // Added missing properties
-  customFields: {
-    resourceCategory: string;
-    resourceDescription1: string;
-    domain: string;
-    sector: string;
-    region: string;
-    resourceVersion: string;
-    resourceCode: string;
-    resourceDescription2: string;
-    overview: string;
-    timeBenefit: string;
-    costBenefit: string;
-    qualityBenefit: string;
-    steps: string[];
-    relatedResources: string[];
-    serviceInput: string[];
-    serviceThroughput: string[];
-    serviceOutput: string[];
-    estimatedCompletionTime: string;
-  };
-  // images?: string[]; // Added missing properties
-};
 type ProductCardProps = {
   id: string;
   name: string;
@@ -112,46 +64,6 @@ export default function ProductIntro({ product }: Props) {
     "/assets/images/products/Home & Garden/4Satin.png",
   ];
 const prod = product["product"];
-  const routerId = param.slug as string;
-  // const cartItem = state.cart.find(
-  //   (item) => item.id === product.id || item.id === routerId
-  // );
-
-  const handleImageClick = (ind: number) => () => setSelectedImage(ind);
-
-  // const handleCartAmountChange = (amount: number) => () => {
-  //   dispatch({
-  //     type: "CHANGE_CART_AMOUNT",
-  //     payload: {
-  //       price: product.price,
-  //       qty: amount,
-  //       name: product.title,
-  //       imgUrl: safeImages[0],
-  //       id: product.id || routerId,
-  //     },
-  //   });
-  // };
-  function getOrdinalSuffix(day) {
-    if (day > 3 && day < 21) return "th"; // Special case for 11th to 13th
-    switch (day % 10) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
-  }
-  function formatDateWithOrdinal(dateString) {
-    const date = dayjs(dateString);
-    const day = date.date();
-    const ordinalSuffix = getOrdinalSuffix(day);
-    const formattedDate = date.format(`d MMMM, YYYY`);
-    return formattedDate;
-  }
-const formattedDate = formatDateWithOrdinal(prod.createdAt);
   return (
     <Box overflow="hidden" bg="white" borderRadius="12px" padding={"12px"}>
       <Grid container spacing={55}>
@@ -164,9 +76,6 @@ const formattedDate = formatDateWithOrdinal(prod.createdAt);
               ml={"10px"}
               mr={"10px"}
             >
-              {/* <Button mb="10px" size={"small"} bg="#0030E3" borderRadius="4px" height="27px" color="#FFF" variant="outlined">
-                Govt. sponsored
-              </Button> */}
               <Image
                 src={safeImages[selectedImage]}
                 width="655px;"
@@ -180,11 +89,8 @@ const formattedDate = formatDateWithOrdinal(prod.createdAt);
             {prod.name}
           </H2>
           <FlexBox alignItems="center" mb="1rem">
-            {/* <SemiSpan color="#7D879C" style={{ fontSize: '16px' }}>Format: </SemiSpan> */}
-            {/* <H5 ml="12px" color="#2B3445">Word</H5>
-            <Icon>vector</Icon> */}
             {/* <Box>
-              <Rating color="warn" size="medium" value={4} outof={5} />
+              <Rating color="warn" size="medium" value={prod.rating} outof={5} />
             </Box>
             <H6 mr="2px">(50)</H6>
             <Icon>vector</Icon> */}
@@ -196,7 +102,7 @@ const formattedDate = formatDateWithOrdinal(prod.createdAt);
               {prod.customFields.resourceCode}{" "}
             </H5>
           </FlexBox>
-          <Button
+          {/* <Button
             mt="30px"
             size="small"
             color="#007AFF"
@@ -204,7 +110,7 @@ const formattedDate = formatDateWithOrdinal(prod.createdAt);
             variant="text"
           >
             BLUEPRINT
-          </Button>
+          </Button> */}
           <Box mb="45px" mt="30px">
             {prod.description}
           </Box>
@@ -252,14 +158,14 @@ const formattedDate = formatDateWithOrdinal(prod.createdAt);
           </FlexBox>
           <FlexBox mb="1em">
             <Icon ml={"10px"} color="#7D879C">
-              truck
+              clock-circular-outline
             </Icon>
             <H4 ml="8px" mr="8px" color="#2B3445">
               Estimated Completion:
             </H4>
             <SemiSpan color="#002180" fontWeight="w500">
               <H4 ml="2px" color="#7D879C">
-                {formattedDate}
+                {prod.customFields.estimatedCompletionTime} days
               </H4>
             </SemiSpan>
           </FlexBox>

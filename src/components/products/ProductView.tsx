@@ -2,36 +2,61 @@
 
 import { useState } from "react";
 import Box from "@component/Box";
-import Shop from "@models/shop.model";
 import FlexBox from "@component/FlexBox";
 import { H5 } from "@component/Typography";
 import Product from "@models/product.model";
-import Section2 from "@sections/market-2/section-2";
-import ProductReview from "@component/products/ProductReview";
-import AvailableShops from "@component/products/AvailableShops";
+import ProductReview from "@component/products/ProductSteps";
 import RelatedProducts from "@component/products/RelatedProducts";
-import FrequentlyBought from "@component/products/FrequentlyBought";
 import ProductDescription from "@component/products/ProductDescription";
 import ProductQuiz from "./ProductQuiz";
 import ProductInfo from "./ProductInfo";
-import Section6 from "@sections/grocery-1/section-6";
+import { StaticImageData } from "next/image";
 
 // ==============================================================
-type Props = {
-  // shops: Shop[];
-  relatedProducts: Product[];
-  frequentlyBought: Product[];
+
+// ==============================================================
+type ProductCardProps = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  createdAt: string;
+  imgURL: string | StaticImageData;
+  price: number; // Added missing properties
+  rating: number;
+  reviews: [];
+  stock: number;
+  customFields: {
+    resourceCategory: string;
+    resourceDescription1: string;
+    domain: string;
+    sector: string;
+    region: string;
+    resourceVersion: string;
+    resourceCode: string;
+    resourceDescription2: string;
+    overview: string;
+    timeBenefit: string;
+    costBenefit: string;
+    qualityBenefit: string;
+    steps: string[];
+  };
+  discount: number; // Added missing properties
+  thumbnail: string; // Added missing properties
+  spec: string; // Added missing properties
+  categories: string[]; // Added missing properties
+  // images?: string[]; // Added missing properties
 };
-// ==============================================================
-
+type Props = {
+  product: ProductCardProps;
+  products: Product[];
+};
 export default function ProductView({
-  // shops,
-  relatedProducts,
-  frequentlyBought,
+  products,product
 }: Props) {
   const [selectedOption, setSelectedOption] = useState("description");
   const handleOptionClick = (opt: any) => () => setSelectedOption(opt);
-
+  // const {prods} =prods;
   return (
     <>
       <Box bg="white" padding={"12px"} mt="8vh" mb="8vh">
@@ -59,9 +84,9 @@ export default function ProductView({
             p="4px 10px"
             className="cursor-pointer"
             borderColor="primary.main"
-            onClick={handleOptionClick("review")}
-            borderBottom={selectedOption === "review" ? "2px solid" : ""}
-            color={selectedOption === "review" ? "primary.main" : "text.muted"}
+            onClick={handleOptionClick("steps")}
+            borderBottom={selectedOption === "steps" ? "2px solid" : ""}
+            color={selectedOption === "steps" ? "primary.main" : "text.muted"}
           >
             Steps
           </H5>
@@ -71,7 +96,9 @@ export default function ProductView({
             borderColor="primary.main"
             onClick={handleOptionClick("questions")}
             borderBottom={selectedOption === "questions" ? "2px solid" : ""}
-            color={selectedOption === "questions" ? "primary.main" : "text.muted"}
+            color={
+              selectedOption === "questions" ? "primary.main" : "text.muted"
+            }
           >
             Questions
           </H5>
@@ -79,18 +106,21 @@ export default function ProductView({
 
         {/* DESCRIPTION AND REVIEW TAB DETAILS */}
         <Box mb="50px">
-          {selectedOption === "description" && <ProductDescription />}
-          {selectedOption === "information" && <ProductInfo />}
-          {selectedOption === "review" && <ProductReview />}
+          {selectedOption === "description" && (
+            <ProductDescription
+              description={product.description}
+            />
+          )}
+          {selectedOption === "info" && <ProductInfo />}
+          {selectedOption === "steps" && (
+            <ProductReview steps={product.customFields.steps} />
+          )}
           {selectedOption === "questions" && <ProductQuiz />}
         </Box>
       </Box>
 
       {/* RELATED PRODUCTS */}
-      {relatedProducts && <RelatedProducts products={relatedProducts} />}
-
-      {/* SERVICE LIST AREA */}
-      {/* <Section2 /> */}
+      {products && <RelatedProducts products={products} />}
     </>
   );
 }
