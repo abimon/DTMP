@@ -15,7 +15,8 @@ import FlexBox from "@component/FlexBox";
 import { Button } from "@component/buttons";
 import { H1, H2, H3, H4, H5, H6, SemiSpan } from "@component/Typography";
 import { useAppContext } from "@context/app-context";
-
+import dayjs from "dayjs";
+import "dayjs/locale/en";
 import { currency } from "@utils/utils";
 import Product from "@models/product.model";
 import { colors } from "theme/colors/colors";
@@ -130,7 +131,27 @@ const prod = product["product"];
   //     },
   //   });
   // };
-
+  function getOrdinalSuffix(day) {
+    if (day > 3 && day < 21) return "th"; // Special case for 11th to 13th
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  }
+  function formatDateWithOrdinal(dateString) {
+    const date = dayjs(dateString);
+    const day = date.date();
+    const ordinalSuffix = getOrdinalSuffix(day);
+    const formattedDate = date.format(`d MMMM, YYYY`);
+    return formattedDate;
+  }
+const formattedDate = formatDateWithOrdinal(prod.createdAt);
   return (
     <Box overflow="hidden" bg="white" borderRadius="12px" padding={"12px"}>
       <Grid container spacing={55}>
@@ -238,7 +259,7 @@ const prod = product["product"];
             </H4>
             <SemiSpan color="#002180" fontWeight="w500">
               <H4 ml="2px" color="#7D879C">
-                24 -30 August, 2025
+                {formattedDate}
               </H4>
             </SemiSpan>
           </FlexBox>

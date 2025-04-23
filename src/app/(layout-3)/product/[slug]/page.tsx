@@ -56,7 +56,6 @@ interface Props {
 }
 export default function ProductDetails({ params }: Props) {
   const [slug, setSlug] = useState("");
-  const [RELATED_CODES, setCode] = useState("");
   useEffect(() => {
     const fetchSlug = async () => {
       const { slug } = await params;
@@ -70,7 +69,7 @@ export default function ProductDetails({ params }: Props) {
     loading,
     error,
   } = useQuery(GET_PRODUCT, { variables: { slug } });
-
+  const { data: products } = useQuery(GET_PRODUCTS);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -82,11 +81,11 @@ export default function ProductDetails({ params }: Props) {
     <Fragment>
       <ProductIntro product={productData} />
 
-      {/* <ProductView
-        shops={shops}
+      <ProductView
+        // shops={shops}
         relatedProducts={relatedProducts}
-        frequentlyBought={frequentlyBought}
-      /> */}
+        frequentlyBought={products}
+      />
     </Fragment>
   );
 }

@@ -18,14 +18,14 @@ import Section6 from "@sections/grocery-1/section-6";
 
 // ==============================================================
 type Props = {
-  shops: Shop[];
+  // shops: Shop[];
   relatedProducts: Product[];
   frequentlyBought: Product[];
 };
 // ==============================================================
 
 export default function ProductView({
-  shops,
+  // shops,
   relatedProducts,
   frequentlyBought,
 }: Props) {
@@ -90,7 +90,7 @@ export default function ProductView({
       {relatedProducts && <RelatedProducts products={relatedProducts} />}
 
       {/* SERVICE LIST AREA */}
-      <Section2 />
+      {/* <Section2 /> */}
     </>
   );
 }
