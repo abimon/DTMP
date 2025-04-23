@@ -110,7 +110,7 @@ export default function ProductIntro({ product }: Props) {
     "/assets/images/products/Home & Garden/3Aloe.png",
     "/assets/images/products/Home & Garden/4Satin.png",
   ];
-const prod = product["product"];console.log(prod);
+const prod = product["product"];
   const routerId = param.slug as string;
   // const cartItem = state.cart.find(
   //   (item) => item.id === product.id || item.id === routerId

@@ -68,6 +68,8 @@ export const GET_PRODUCT = gql`
       name
       slug
       description
+      createdAt
+      updatedAt
       featuredAsset {
         preview
       }

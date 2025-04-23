@@ -38,7 +38,7 @@
 
 // API FUNCTIONS
 import { Fragment, useEffect, useState } from "react";
-import { GET_PRODUCT, GET_PRODUCTS } from "@lib/queries";
+import { GET_PRODUCT, GET_PRODUCTS} from "@lib/queries";
 import { useQuery } from "@apollo/client";
 import ProductView from "@component/products/ProductView";
 import shops from "@utils/__api__/shops";
@@ -56,6 +56,7 @@ interface Props {
 }
 export default function ProductDetails({ params }: Props) {
   const [slug, setSlug] = useState("");
+  const [RELATED_CODES, setCode] = useState("");
   useEffect(() => {
     const fetchSlug = async () => {
       const { slug } = await params;
@@ -69,16 +70,11 @@ export default function ProductDetails({ params }: Props) {
     loading,
     error,
   } = useQuery(GET_PRODUCT, { variables: { slug } });
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedFilters, setSelectedFilters] = useState([]);
-const {data: productsData,} = useQuery(GET_PRODUCTS);
-  useEffect(() => {
-    if (productsData?.products?.items) {
-      setFilteredProducts(productsData.products.items);
-    }
-  }, [productsData]);
-  console.log(productsData['products']['items']);
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+ 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong: {error.message}</p>;
   // console.log({ productData });
