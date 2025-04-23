@@ -11,7 +11,7 @@ import Icon from "@component/icon/Icon";
 import FlexBox from "@component/FlexBox";
 import { Button } from "@component/buttons";
 import NextImage from "@component/NextImage";
-import { H3, Paragraph, Span } from "@component/Typography";
+import { H3, H5, Paragraph, Span } from "@component/Typography";
 import ProductQuickView from "@component/products/ProductQuickView";
 import { useAppContext } from "@context/app-context";
 import { calculateDiscount, currency } from "@utils/utils";
@@ -109,7 +109,7 @@ type ProductCardProps = {
   slug: string;
   description: string;
   createdAt: string;
-  imgURL:  StaticImageData;
+  imgURL: StaticImageData;
   price: number; // Added missing properties
   rating: number;
   reviews: [];
@@ -127,6 +127,7 @@ type ProductCardProps = {
     timeBenefit: string;
     costBenefit: string;
     qualityBenefit: string;
+    estimatedCompletionTime: string;
     steps: string[];
   };
   discount: number; // Added missing properties
@@ -136,14 +137,16 @@ type ProductCardProps = {
   // images?: string[]; // Added missing properties
 };
 // =============================================================
-
-export default function ProductCard20(props: ProductCardProps) {
-  const {id, name,slug,createdAt,stock,spec} = props;
+type Props = {
+  product: ProductCardProps;
+};
+export default function ProductCard20({product}: Props) {
+  
 
   const [open, setOpen] = useState(false);
   const { state, dispatch } = useAppContext();
 
-  const cartItem = state.cart.find((item) => item.id === id);
+  const cartItem = state.cart.find((item) => item.id === product.id);
 
   const toggleDialog = useCallback(() => setOpen((open) => !open), []);
 
@@ -158,78 +161,84 @@ export default function ProductCard20(props: ProductCardProps) {
     <Wrapper>
       <ImageWrapper>
         <ImageBox className="hoverImgBox">
-          <Link href={`/product/${slug}`}>
-            <NextImage alt={slug} width={190} objectFit="cover" height={160} src="/assets/images/products/Home & Garden/vida.png" />
+          <Link href={`/product/${product.slug}`}>
+            <NextImage
+              alt={product.slug}
+              width={190}
+              objectFit="cover"
+              height={160}
+              src="/assets/images/products/Home & Garden/vida.png"
+            />
           </Link>
         </ImageBox>
-
       </ImageWrapper>
 
       <ContentWrapper>
         {/* Text Content */}
-        <div style={{ padding: '16px' }}>
+        <div style={{ padding: "16px" }}>
           {/* Badge Section */}
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '8px' }}>
-            {/* INSIGHT Button */}
+          <div style={{ display: "flex", gap: "10px", marginBottom: "8px" }}>
+            <Link href={`/product/${product.slug}`}>
+              <H5
+                mb={1}
+                title={product.name}
+                fontSize="16px"
+                fontWeight="600"
+                className="title"
+                color="text.secondary"
+                style={{ marginBottom: "8px" }}
+              >
+                {product.name}
+              </H5>
+            </Link>
             <div
               style={{
-                backgroundColor: 'blue',
-                padding: '5px 10px',
-                borderRadius: '4px',
-                fontSize: '12px',
-                fontWeight: 'bold',
-                color: 'white',
+                fontSize: "12px",
+                fontWeight: "400",
+                color: "#7D879C",
+                alignContent: "center",
               }}
             >
-              View
-            </div>
-            {/* Digital Maturity Text */}
-            <div
-              style={{
-                fontSize: '12px',
-                fontWeight: '400',
-                color: '#7D879C',
-                alignContent: 'center',
-              }}
-            >
-              {spec}
+              {product.spec}
             </div>
           </div>
-
+          <div
+            style={{
+              // backgroundColor: "blue",
+              // padding: "5px 10px",
+              // borderRadius: "4px",
+              fontSize: "12px",
+              fontWeight: "bold",
+              color: "blue",
+            }}
+          >
+            {product.customFields.resourceCategory}
+          </div>
           {/* Date Created Section */}
           <div
             style={{
-              fontSize: '10px',
-              fontWeight: '400',
-              color: '#A5AFC4',
-              marginBottom: '8px',
+              fontSize: "10px",
+              fontWeight: "400",
+              color: "#A5AFC4",
+              marginBottom: "8px",
             }}
           >
-            Created: {createdAt}
+            Estimated Completion: {product.customFields.estimatedCompletionTime}
           </div>
 
-          {/* Title Section */}
-          <Link href={`/product/${slug}`}>
-            <H3
-              mb={1}
-              title={name}
-              fontSize="16px"
-              fontWeight="600"
-              className="title"
-              color="text.secondary"
-              style={{ marginBottom: '8px' }}
-            >
-              {name}
-            </H3>
-          </Link>
-
           {/* Subtitle Section */}
-          <p style={{ fontSize: '14px', color: '#50526B', fontWeight: '400', margin: 0 }}>
-            {stock}
+          <p
+            style={{
+              fontSize: "14px",
+              color: "#50526B",
+              fontWeight: "400",
+              margin: 0,
+            }}
+          >
+            {product.stock}
           </p>
         </div>
       </ContentWrapper>
-
 
       {/* <ProductQuickView
         open={open}

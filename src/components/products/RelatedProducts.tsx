@@ -26,21 +26,7 @@ console.log(products["products"]['items']);
           {prods.map((item, ind) => (
             <Box py="0.25rem" key={ind}>
               <ProductCard21
-                id={item.id}
-                name={item.name}
-                slug={item.slug}
-                description={item.description}
-                imgURL={item.imgURL}
-                price={item.price}
-                customFields={item.customFields}
-                createdAt={item.createdAt}
-                stock={item.stock}
-                discount={item.discount}
-                thumbnail={item.thumbnail}
-                spec={item.spec}
-                categories={item.categories}
-                rating={item.rating}
-                reviews={item.reviews}
+                product={item}
               />
             </Box>
           ))}
